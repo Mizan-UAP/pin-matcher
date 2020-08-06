@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="pinViewer" class="form-control" type="text">
+                    <button id="pinGenerator" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="numberView" class="form-control" type="text">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                                <div id="seven" class="button">7</div>
+                                <div id="eight" class="button">8</div>
+                                <div id="nine" class="button">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div id="four" class="button">4</div>
+                                <div id="five" class="button">5</div>
+                                <div id="six" class="button">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div id="one" class="button">1</div>
+                                <div id="two" class="button">2</div>
+                                <div id="three" class="button">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div id="replaceOnce" class="button">
+                                    < </div>
+                                        <div id="zero" class="button">0</div>
+                                        <div id="clear" class="button">C</div>
+                                </div>
+                                <div>
+                                    <button id="submitButton" type="submit" class="submit-btn">Submit</button>
+                                    <p class="action-left">3 try left</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="notify-section">
+                    <p id="unMatch" class="notify">❌ Pin Didn't Match, Please try again</p>
+                    <p id="match" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+                </div>
+            </div>
+
+
+            <script>
+
+                // pin Number generation
+
+                const pinGenerator = document.getElementById('pinGenerator');
+                pinGenerator.addEventListener('click', function () {
+                    let number = Math.random(5).toFixed(4) * 10000;
+                    let finalNumber = Math.ceil(number);
+
+                    if (finalNumber < 10) {
+                        finalNumber = '000' + finalNumber;
+                        return finalNumber;
+                    }
+                    if (finalNumber < 100) {
+                        finalNumber = '00' + finalNumber;
+                        return finalNumber;
+                    }
+                    if (finalNumber < 1000) {
+                        finalNumber = '0' + finalNumber;
+                        return finalNumber;
+                    }
+
+                    let element = document.getElementById('pinViewer').innerText;
+                    element = finalNumber;
+                    let elementValue = parseFloat(element);
+                    document.getElementById('pinViewer').setAttribute("value", elementValue);
+                    console.log(typeof elementValue);
+                });
+
+
+                // pressing Submit  button
+                const pressSubmit = document.getElementById('submitButton');
+                pressSubmit.addEventListener('click', function () {
+                    let pinValue = document.getElementById('pinViewer').value;
+                    let pinNumber = document.getElementById('numberView').value;
+
+                    console.log(pinValue, pinNumber);
+
+                    if (pinValue && pinNumber != 0 && pinValue.trim() == pinNumber.trim()) {
+                        document.getElementById('match').style.display = "block";
+                    }
+                    else {
+
+                        document.getElementById('unMatch').style.display = "block";
+                    }
+                })
+
+
+                // pressing C
+
+                const pressingC = document.getElementById('clear');
+                pressingC.addEventListener('click', function () {
+                    document.getElementById('numberView').value = '';
+
+                })
+
+
+
+                // removing single digit
+
+                const removeSingle = document.getElementById('replaceOnce');
+                removeSingle.addEventListener('click', function () {
+                    let newDigit = document.getElementById('numberView').value.length - 1;
+                    console.log(newDigit);
+                    document.getElementById('numberView').setAttribute("value", newDigit);
+
+                
+
+                })
+
+
+                // Number catching 
+
+                number('zero');
+                number('one');
+                number('two');
+                number('three');
+                number('four');
+                number('five');
+                number('six');
+                number('seven');
+                number('eight');
+                number('nine');
+
+                function number(idName) {
+                    const pressNumber = document.getElementById(idName);
+                    pressNumber.addEventListener('click', function () {
+                        showElement(idName);
+
+                    });
+                }
+                let numberString = "";
+                function showElement(id) {
+                    const element = document.getElementById(id).innerText;
+                    const elementValue = parseFloat(element);
+                    numberString = numberString + elementValue;
+                    let newNumber = parseInt(numberString);
+                    document.getElementById('numberView').setAttribute("value", newNumber);
+                    console.log(typeof newNumber);
+
+
+                }
+
+
+
+
+
+
+            </script>
+</body>
+
+</html>
